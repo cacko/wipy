@@ -1,0 +1,6 @@
+framework module Pods_wipy {
+  umbrella header "Pods-wipy-umbrella.h"
+
+  export *
+  module * { export * }
+}
