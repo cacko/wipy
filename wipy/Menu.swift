@@ -139,21 +139,26 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     
     var isFloating = false {
         didSet {
-            window.level = isFloating ? .floating : .normal
-            view.player.borderWidth = isFloating ? 0 : 10
-            view.player.cornerRadius = isFloating ? 5 : 10
-            _ = isFloating ? disableScreenSleep() : enableScreenSleep()
+            guard isFullScreen else {
+                window.level = isFloating ? .floating : .normal
+                _ = isFloating ? disableScreenSleep() : enableScreenSleep()
+                Player.instance.onTop = isFloating
+                return
+            }
         }
     }
     
     var isFullScreen = false {
         didSet {
             window.toggleFullScreen(self)
-            _ = isFullScreen ? disableScreenSleep() : enableScreenSleep()
             if isFullScreen {
+                NSCursor.hide()
+                let _ = disableScreenSleep()
                 isFloating = isFullScreen
+            } else {
+                let _ = enableScreenSleep()
+                NSCursor.unhide()
             }
-            VideoView.instance.needsUpdateConstraints = true
         }
     }
     

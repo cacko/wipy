@@ -24,12 +24,7 @@ class VideoView: NSView
     }
     
     func initPlayer() {
-        player.player.setVideoLayer(vlcLayer)
-        vlcLayer.fillScreen = true
         player.drawable = self
-        vlcLayer.contentsGravity = .resizeAspectFill
-        layer?.addSublayer(vlcLayer)
-        return
     }
     
     
@@ -49,6 +44,7 @@ enum Streams: String {
     case mp4 = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
     case usman = "rtsp://192.168.0.105:8554/unicast"
     case rtsp_bunny = "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"
+    case rtmp = "rtmp://192.168.0.105:1935/tv/usman"
 }
 
 struct VideoViewRep: NSViewRepresentable {
@@ -66,11 +62,9 @@ struct VideoViewRep: NSViewRepresentable {
 
 struct ContentView: View {
     @ObservedObject var player = Player.instance
-    @State var initialized = false
 
     func playVideo() {
-        guard initialized else {
-            self.initialized = true
+        guard player.initliazed else {
             VideoView.instance.initPlayer()
             player.play(_url(.usman))
             return
@@ -86,18 +80,26 @@ struct ContentView: View {
         ZStack(alignment: .bottomLeading) {
             GeometryReader { geo in
                 VideoViewRep()
-                .frame(minWidth: 178, minHeight: 100, alignment: .center)
-                .frame(width: geo.size.width, height: geo.size.height)
-                .cornerRadius(player.cornerRadius)
                 .onAppear(perform: playVideo)
                 .aspectRatio(16/9, contentMode: ContentMode.fill)
-                .scaledToFit()
+                .frame(width: geo.size.width, height: geo.size.height)
+                .cornerRadius(player.cornerRadius)
+                .scaledToFill()
+                .fixedSize()
             }
-            Image(systemName: "speaker.slash")
-                .font(.title)
-                .padding()
-                .foregroundColor(.white)
-                .opacity(player.muted ? 0.8 : 0)
+            HStack {
+                Image(systemName: "speaker.slash")
+                    .font(.title)
+                    .padding()
+                    .foregroundColor(.white)
+                    .opacity(player.muted ? 0.8 : 0)
+                Spacer()
+                Image(systemName: "paperclip")
+                    .font(.title)
+                    .padding()
+                    .foregroundColor(.white)
+                    .opacity(player.onTop ? 0.5 : 0)
+            }
 
         }.alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
