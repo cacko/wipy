@@ -20,6 +20,17 @@ extension VLCVideoView {
 
 }
 
+extension CATransaction {
+
+    static func disableAnimations(_ completion: () -> Void) {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        completion()
+        CATransaction.commit()
+    }
+
+}
+
 class VideoView: VLCVideoView, VLCMediaPlayerDelegate
 {
 
@@ -47,8 +58,20 @@ class VideoView: VLCVideoView, VLCMediaPlayerDelegate
 
 
     func mediaPlayerStateChanged(_ aNotification: Notification!) {
-        let size = window?.frame.size
-        window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset * -1)))
+        CATransaction.disableAnimations {
+            let size = window?.frame.size
+            lastOFfset *= -1
+            switch player.player.state {
+            case .buffering:
+                window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset)))
+                break
+            case .playing:
+                window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset)))
+                break
+            default: break
+            }
+        }
+
     }
     
 }
@@ -86,8 +109,18 @@ struct ContentView: View {
             GeometryReader { geo in
                 VideoViewRep()
 //                .onAppear(perform: playVideo)
-                .cornerRadius(player.cornerRadius)
+                    .frame(width: geo.size.width, height: geo.size.height)
+//                                  .scaledToFill()
             }
+            
+//            GeometryReader { geo in
+//                  PlayerContainerView(captureSession: player.captureSession)
+//                      .aspectRatio(16/9, contentMode: ContentMode.fill)
+//                  .frame(width: geo.size.width, height: geo.size.height)
+//                  .scaledToFill()
+//                  .cornerRadius(player.cornerRadius)
+//                  .fixedSize()
+//              }
             HStack {
                 Image(systemName: "speaker.slash")
                     .font(.title)
@@ -104,6 +137,6 @@ struct ContentView: View {
         }
         .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
-        }
+        }.aspectRatio(16/9, contentMode: .fit)
     }
 }

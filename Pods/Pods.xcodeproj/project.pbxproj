@@ -15,6 +15,7 @@
 			dependencies = (
 			);
 			name = VLCKit;
+			productName = VLCKit;
 		};
 /* End PBXAggregateTarget section */
 
@@ -36,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		0D987499FD2A94B7F744A0E13A8BD1C1 /* Pods-wipy-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-wipy-dummy.m"; sourceTree = "<group>"; };
-		0F24FAF12149E024C7D46161BCE78C5C /* Pods-wipy */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-wipy"; path = Pods_wipy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F24FAF12149E024C7D46161BCE78C5C /* Pods_wipy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wipy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12010FE80956BBD7641D29140557577B /* VLCRendererDiscoverer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCRendererDiscoverer.h; path = VLCKit.framework/Versions/A/Headers/VLCRendererDiscoverer.h; sourceTree = "<group>"; };
 		1E2B00DD9E39128FD07296CDC7F13B06 /* VLCTranscoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCTranscoder.h; path = VLCKit.framework/Versions/A/Headers/VLCTranscoder.h; sourceTree = "<group>"; };
 		2502F081988EC1D9A25722C0B778D289 /* VLCAudio.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCAudio.h; path = VLCKit.framework/Versions/A/Headers/VLCAudio.h; sourceTree = "<group>"; };
@@ -55,7 +56,7 @@
 		97D8EA8DEDF2F3F2AD0CD384D956F747 /* VLCKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCKit.h; path = VLCKit.framework/Versions/A/Headers/VLCKit.h; sourceTree = "<group>"; };
 		97F5633412A79174E48794D97F5BDA28 /* VLCMediaPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCMediaPlayer.h; path = VLCKit.framework/Versions/A/Headers/VLCMediaPlayer.h; sourceTree = "<group>"; };
 		99ED70B83CEF53A498D37F2180FDD1FC /* VLCKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = VLCKit.release.xcconfig; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AC3606F014C77A01EEFADA9425CA423D /* VLCMedia.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCMedia.h; path = VLCKit.framework/Versions/A/Headers/VLCMedia.h; sourceTree = "<group>"; };
 		BB5F5AAAFE0EF873753F780F506629D7 /* VLCStreamOutput.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VLCStreamOutput.h; path = VLCKit.framework/Versions/A/Headers/VLCStreamOutput.h; sourceTree = "<group>"; };
 		C1430F003D39D9906881A6AC724B7931 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -85,7 +86,7 @@
 		3832F8F4A5EADDF69DED817626A5B56E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0F24FAF12149E024C7D46161BCE78C5C /* Pods-wipy */,
+				0F24FAF12149E024C7D46161BCE78C5C /* Pods_wipy.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,7 +131,6 @@
 				E16259E7D92A232C8736B478EAEA8F34 /* Frameworks */,
 				C4A0B0AE4C99DCA5C7729B5D57FA5C91 /* Support Files */,
 			);
-			name = VLCKit;
 			path = VLCKit;
 			sourceTree = "<group>";
 		};
@@ -226,7 +226,7 @@
 			);
 			name = "Pods-wipy";
 			productName = Pods_wipy;
-			productReference = 0F24FAF12149E024C7D46161BCE78C5C /* Pods-wipy */;
+			productReference = 0F24FAF12149E024C7D46161BCE78C5C /* Pods_wipy.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -236,7 +236,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1300;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 13.0";
@@ -293,7 +293,6 @@
 			baseConfigurationReference = 53249B24A2BF565CF3F0EB31F5FC7B75 /* Pods-wipy.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -458,7 +457,6 @@
 			baseConfigurationReference = FABDF195C452BB98015AAB6C380C3404 /* Pods-wipy.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -494,7 +492,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79B1CAE1F4D436AB2BABC8EE319DCAA3 /* VLCKit.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -511,7 +508,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 99ED70B83CEF53A498D37F2180FDD1FC /* VLCKit.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				COMBINE_HIDPI_IMAGES = YES;

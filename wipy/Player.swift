@@ -31,7 +31,6 @@ class Player: NSObject, ObservableObject  {
     
     @Published var borderWidth: CGFloat = 5
     @Published var error: DeviceError? = nil
-    @Published var cornerRadius: CGFloat = 0
     @Published var muted: Bool = false
     @Published var resolution: CGSize = CGSize(width: 1920, height: 1080)
     @Published var state: VLCMediaPlayerState = .stopped
