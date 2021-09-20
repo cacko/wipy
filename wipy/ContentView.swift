@@ -96,31 +96,12 @@ struct VideoViewRep: NSViewRepresentable {
 struct ContentView: View {
     @ObservedObject var player = Player.instance
 
-//    func playVideo() {
-//        guard player.initliazed else {
-//            player.play(_url(player.media))
-//            return
-//        }
-//
-//    }
-
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             GeometryReader { geo in
                 VideoViewRep()
-//                .onAppear(perform: playVideo)
                     .frame(width: geo.size.width, height: geo.size.height)
-//                                  .scaledToFill()
             }
-            
-//            GeometryReader { geo in
-//                  PlayerContainerView(captureSession: player.captureSession)
-//                      .aspectRatio(16/9, contentMode: ContentMode.fill)
-//                  .frame(width: geo.size.width, height: geo.size.height)
-//                  .scaledToFill()
-//                  .cornerRadius(player.cornerRadius)
-//                  .fixedSize()
-//              }
             HStack {
                 Image(systemName: "speaker.slash")
                     .font(.title)
@@ -138,5 +119,6 @@ struct ContentView: View {
         .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
         }.aspectRatio(16/9, contentMode: .fit)
+            .border(.regularMaterial, width: player.borderWidth).cornerRadius(5)
     }
 }

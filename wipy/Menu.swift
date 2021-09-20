@@ -175,6 +175,7 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     var view: ContentView
     var window: NSWindow
     var mainMenu: NSMenu
+    var player = Player.instance
     
     var noSleepAssertionID: IOPMAssertionID = 0
     var noSleepReturn: IOReturn?
@@ -212,9 +213,11 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
                 NSCursor.hide()
                 let _ = disableScreenSleep()
                 isFloating = isFullScreen
+                player.borderWidth = 0
             } else {
                 let _ = enableScreenSleep()
                 NSCursor.unhide()
+                player.borderWidth = 5
             }
         }
     }
