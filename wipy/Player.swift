@@ -26,7 +26,7 @@ struct DeviceError: Error, Identifiable {
 }
 
 
-class Player: NSObject, ObservableObject, VLCMediaPlayerDelegate , VLCMediaDelegate {
+class Player: NSObject, ObservableObject  {
     
     
     @Published var borderWidth: CGFloat = 5
@@ -37,38 +37,16 @@ class Player: NSObject, ObservableObject, VLCMediaPlayerDelegate , VLCMediaDeleg
     @Published var state: VLCMediaPlayerState = .stopped
     @Published var initliazed: Bool = false
     @Published var onTop: Bool = true
+    @Published var media: VLCMedia = VLCMedia()
     
     static let instance: Player = { Player() }()
     
     var player = VLCMediaPlayer()
-        
-    var layer = VLCVideoLayer()
-    
-    var media = VLCMedia()
-        
-    var drawable : NSView {
-        get {
-            player.drawable as! NSView
-        }
-        set {
-            layer.fillScreen = true
-            layer.contentsGravity = .resizeAspectFill
-            layer.magnificationFilter = .nearest
-            layer.minificationFilter = .nearest
-            player.setVideoLayer(layer)
-            player.drawable = newValue
-            player.delegate = self
-            newValue.layer = layer
-            initliazed = true
-        }
-    }
-    
-
-
-    func play(_ u: URL) {
-        media = VLCMedia(url: u)
-        media.delegate = self
-        player.media = media
+                    
+    func play(_ u: VLCMedia) {
+        initliazed = true
+        media = u
+        player.media = u
         player.play()
     }
     
@@ -81,13 +59,5 @@ class Player: NSObject, ObservableObject, VLCMediaPlayerDelegate , VLCMediaDeleg
     {
         player.audio.volume = mode ? 0 : 1
         muted = mode
-    }
-    
-    func mediaPlayerStateChanged(_ aNotification: Notification!) {
-        state = player.state
-     }
-    
-    func mediaDidFinishParsing(_ aMedia: VLCMedia) {
-        drawable.autoresizesSubviews = true
     }
 }

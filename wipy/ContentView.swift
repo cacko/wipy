@@ -9,51 +9,61 @@ import SwiftUI
 import VLCKit
 import AVFoundation
 
-class VideoView: NSView
+extension VLCVideoView {
+    
+    var fillScreen: Bool {
+            true
+    }
+    var backColor: NSColor {
+        .green
+    }
+
+}
+
+class VideoView: VLCVideoView, VLCMediaPlayerDelegate
 {
 
     var player: Player = Player.instance
-    var vlcLayer: VLCVideoLayer = VLCVideoLayer()
-        
+    
+    private var lastOFfset = 1
+    
+    
     init() {
         super.init(frame: .zero)
+        player.player.drawable = self
+        player.player.delegate = self
     }
-        
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func initPlayer() {
-        player.drawable = self
-    }
-    
-    
+        
     override public func mouseDown(with event: NSEvent) {
         if window!.inLiveResize {
             return
         }
         window?.performDrag(with: event)
       }
-        
-    static let instance: VideoView = { VideoView() }()
 
-}
 
-enum Streams: String {
+    func mediaPlayerStateChanged(_ aNotification: Notification!) {
+        let size = window?.frame.size
+        window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset * -1)))
+    }
     
-    case mp4 = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-    case usman = "rtsp://192.168.0.105:8554/unicast"
-    case rtsp_bunny = "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"
-    case rtmp = "rtmp://192.168.0.105:1935/tv/usman"
 }
+
+
 
 struct VideoViewRep: NSViewRepresentable {
+    
     func makeNSView(context: Context) -> VideoView {
-        VideoView.instance
+        VideoView()
     }
     
     func updateNSView(_ nsView: VideoView, context: Context) {
     }
+    
     
     typealias NSViewType = VideoView
 }
@@ -63,29 +73,20 @@ struct VideoViewRep: NSViewRepresentable {
 struct ContentView: View {
     @ObservedObject var player = Player.instance
 
-    func playVideo() {
-        guard player.initliazed else {
-            VideoView.instance.initPlayer()
-            player.play(_url(.usman))
-            return
-        }
+//    func playVideo() {
+//        guard player.initliazed else {
+//            player.play(_url(player.media))
+//            return
+//        }
+//
+//    }
 
-    }
-    
-    func _url(_ u: Streams) -> URL {
-        URL(string: u.rawValue)!
-    }
-    
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             GeometryReader { geo in
                 VideoViewRep()
-                .onAppear(perform: playVideo)
-                .aspectRatio(16/9, contentMode: ContentMode.fill)
-                .frame(width: geo.size.width, height: geo.size.height)
+//                .onAppear(perform: playVideo)
                 .cornerRadius(player.cornerRadius)
-                .scaledToFill()
-                .fixedSize()
             }
             HStack {
                 Image(systemName: "speaker.slash")
@@ -100,9 +101,9 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .opacity(player.onTop ? 0.5 : 0)
             }
-
-        }.alert(item: $player.error) { err in
+        }
+        .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
-        }.aspectRatio(player.resolution, contentMode: .fit)
+        }
     }
 }
