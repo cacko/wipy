@@ -1,0 +1,13 @@
+#!/bin/zsh
+VIDEO="/dev/video0"
+AUDIO="plughw:CARD=MS2109,DEV=0"
+FORMAT="MJPG"
+RESOLUTION="1280x720"
+FPS=20
+FB=1
+AR=11025
+AC=1
+
+v4l2-ctl -d 0 -v width=1280,height=720 -p 20
+v4l2rtspserver -Q $FB -f$FORMAT -G "{$RESOLUTION}x{$FPS}" -A $AR -C $AC $@ $VIDEO,$AUDIO
+
