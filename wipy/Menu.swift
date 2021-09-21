@@ -30,10 +30,11 @@ class StreamItem: CrapItem {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }
 
 class CrapItem: NSMenuItem, NSUserInterfaceValidations {
-    
+        
     func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         return true
     }
@@ -43,10 +44,11 @@ class StreamMenu: CrapMenu {
     
     override var actions: Array<NSMenuItem> { get {
          [
-            StreamItem(title: "Usman", action: #selector(onStream(sender:)), keyEquivalent: "1", media: VLCMedia(url: _url(.usman))),
-            StreamItem(title: "Bunny", action: #selector(onStream(sender:)), keyEquivalent: "2", media: VLCMedia(url: _url(.bunny))),
-            StreamItem(title: "Mp4", action: #selector(onStream(sender:)), keyEquivalent: "3", media: VLCMedia(url: _url(.mp4))),
-        ]
+            StreamItem(title:"Usman",  action: #selector(onStream(sender:)), keyEquivalent: "1", media: VLCMedia(url: _url(.usman))),
+            StreamItem(title: "Bunny",action: #selector(onStream(sender:)), keyEquivalent: "2", media: VLCMedia(url: _url(.bunny))),
+            StreamItem(title: "Mp4",action: #selector(onStream(sender:)), keyEquivalent: "3", media: VLCMedia(url: _url(.mp4))),
+            ]
+        
     }}
     
     func _url(_ u: Streams) -> URL {
@@ -71,7 +73,7 @@ class AudioMenu: CrapMenu {
     
     override var actions: Array<NSMenuItem> { get {
          [
-            NSMenuItem(title: "Toggle sound", action: #selector(onAudioMute(sender:)), keyEquivalent: "m"),
+            CrapItem(title: "Toggle sound", action: #selector(onAudioMute(sender:)), keyEquivalent: "m"),
         ]
     }}
 
@@ -81,9 +83,9 @@ class VideoMenu: CrapMenu {
     
     override var actions: Array<NSMenuItem> { get {
          [
-            NSMenuItem(title: "Always on top", action: #selector(onAlwaysOnTop(sender:)), keyEquivalent: "a"),
-            NSMenuItem(title: "Toggle full screen", action: #selector(onToggleFullscreen(sender:)), keyEquivalent: "f"),
-            NSMenuItem(title: "Minimize", action: #selector(onMinimize(sender:)), keyEquivalent: "\u{1b}"),
+            CrapItem(title: "Always on top", action: #selector(onAlwaysOnTop(sender:)), keyEquivalent: "a"),
+            CrapItem(title: "Toggle full screen", action: #selector(onToggleFullscreen(sender:)), keyEquivalent: "f"),
+            CrapItem(title: "Minimize", action: #selector(onMinimize(sender:)), keyEquivalent: "\u{1b}"),
         ]
     }}
     
@@ -126,10 +128,7 @@ class CrapMenu: NSMenu {
         sender.state = parent.isFullScreen ? .on : .off
     }
     
-    @objc func onAudioMute(sender: NSMenuItem) {
-        parent.isMuted.toggle()
-        sender.state = parent.isMuted ? .on : .off
-    }
+
 
     @objc func onAlwaysOnTop(sender: NSMenuItem) {
         parent.isFloating.toggle()
@@ -140,9 +139,6 @@ class CrapMenu: NSMenu {
         NSApplication.shared.terminate(sender)
     }
     
-    @objc func didSelectDevices(_ sender: NSMenuItem) {
-        print("this will never be called")
-    }
     
     @objc func onMinimize(sender: NSMenuItem) {
         if parent.isFullScreen {
@@ -151,14 +147,15 @@ class CrapMenu: NSMenu {
         parent.window.miniaturize(self)
     }
     
+    @objc func onAudioMute(sender: NSMenuItem) {
+        player.mute.toggle()
+        sender.state = player.mute ? .on : .off
+    }
+    
+    
     @objc func onStream(sender: StreamItem) {
         player.stop()
         player.play(sender.media)
-    }
-    
-
-    @objc func didSelectDevice(sender: NSMenuItem) {
-
     }
     
 }
@@ -214,19 +211,17 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
                 let _ = disableScreenSleep()
                 isFloating = isFullScreen
                 player.borderWidth = 0
+                window.showsResizeIndicator = false
             } else {
                 let _ = enableScreenSleep()
                 NSCursor.unhide()
-                player.borderWidth = 5
+                player.borderWidth = 10
+                window.showsResizeIndicator = true
             }
         }
     }
     
-    var isMuted = false {
-        didSet {
-            Player.instance.mute(isMuted)
-        }
-    }
+
     
     init(_ _view: ContentView, _ _window: NSWindow) {
         view = _view

@@ -27,16 +27,20 @@ struct DeviceError: Error, Identifiable {
 
 
 class Player: NSObject, ObservableObject  {
-    
-    
     @Published var borderWidth: CGFloat = 5
     @Published var error: DeviceError? = nil
-    @Published var muted: Bool = false
     @Published var resolution: CGSize = CGSize(width: 1920, height: 1080)
     @Published var state: VLCMediaPlayerState = .stopped
     @Published var initliazed: Bool = false
     @Published var onTop: Bool = true
     @Published var media: VLCMedia = VLCMedia()
+    @Published var playing: Bool = false
+    @Published var opacity = 0.5
+    @Published var mute = false {
+        didSet {
+            player.audio.volume = mute ? 0 : 100
+        }
+    }
     
     static let instance: Player = { Player() }()
     
@@ -46,17 +50,13 @@ class Player: NSObject, ObservableObject  {
         initliazed = true
         media = u
         player.media = u
+        print(media)
         player.play()
     }
     
     func stop() {
         player.stop()
+        playing = false
         player.media = nil
-    }
-    
-    func mute(_ mode: Bool = true)
-    {
-        player.audio.volume = mode ? 0 : 1
-        muted = mode
     }
 }

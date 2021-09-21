@@ -23,6 +23,7 @@
 		161F9C5E26F49CFB005D3739 /* header.m in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C5D26F49CFB005D3739 /* header.m */; };
 		161F9C6026F4B436005D3739 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C5F26F4B436005D3739 /* Menu.swift */; };
 		161F9C6226F4B8A0005D3739 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C6126F4B8A0005D3739 /* Player.swift */; };
+		168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D253C26FA8C7E004CBA39 /* VideoView.swift */; };
 		16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129B26F49B5A002467A7 /* wipyApp.swift */; };
 		16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129D26F49B5A002467A7 /* ContentView.swift */; };
 		16A012A026F49B5B002467A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16A0129F26F49B5B002467A7 /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 		161F9C5D26F49CFB005D3739 /* header.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = header.m; sourceTree = "<group>"; };
 		161F9C5F26F4B436005D3739 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		161F9C6126F4B8A0005D3739 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		168D253C26FA8C7E004CBA39 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		16A0129826F49B5A002467A7 /* wipy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wipy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16A0129B26F49B5A002467A7 /* wipyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wipyApp.swift; sourceTree = "<group>"; };
 		16A0129D26F49B5A002467A7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				161F9C5C26F49CFB005D3739 /* wipy-Bridging-Header.h */,
 				161F9C5F26F4B436005D3739 /* Menu.swift */,
 				161F9C6126F4B8A0005D3739 /* Player.swift */,
+				168D253C26FA8C7E004CBA39 /* VideoView.swift */,
 			);
 			path = wipy;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */,
 				161F9C5E26F49CFB005D3739 /* header.m in Sources */,
 				16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */,
 				161F9C6026F4B436005D3739 /* Menu.swift in Sources */,
@@ -410,6 +414,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = wipy/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "Bl BL";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -445,6 +450,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = wipy/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "Bl BL";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

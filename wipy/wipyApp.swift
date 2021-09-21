@@ -73,14 +73,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.center()
         window.setFrameAutosaveName("Main Window")
         window.contentView = contentViewController.view
-        window.makeKeyAndOrderFront(nil)
         window.aspectRatio = fixedRatio
         window.contentAspectRatio = fixedRatio
         window.collectionBehavior = .fullScreenPrimary
         window.backgroundColor = .clear
-        window.hasShadow = false
+        window.hasShadow = true
+        window.showsResizeIndicator = true
         windowController.window?.delegate = windowController
         windowController.showWindow(self)
+        window.makeKeyAndOrderFront(nil)
         menu.isFloating.toggle()
     }
 

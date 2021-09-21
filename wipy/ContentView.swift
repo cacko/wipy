@@ -7,107 +7,71 @@
 
 import SwiftUI
 import VLCKit
-import AVFoundation
+import AppKit
 
-extension VLCVideoView {
-    
-    var fillScreen: Bool {
-            true
-    }
-    var backColor: NSColor {
-        .green
-    }
+extension NSOpenPanel {
 
-}
-
-extension CATransaction {
-
-    static func disableAnimations(_ completion: () -> Void) {
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        completion()
-        CATransaction.commit()
-    }
-
-}
-
-class VideoView: VLCVideoView, VLCMediaPlayerDelegate
-{
-
-    var player: Player = Player.instance
-    
-    private var lastOFfset = 1
-    
-    
-    init() {
-        super.init(frame: .zero)
-        player.player.drawable = self
-        player.player.delegate = self
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-        
-    override public func mouseDown(with event: NSEvent) {
-        if window!.inLiveResize {
-            return
-        }
-        window?.performDrag(with: event)
-      }
-
-
-    func mediaPlayerStateChanged(_ aNotification: Notification!) {
-        CATransaction.disableAnimations {
-            let size = window?.frame.size
-            lastOFfset *= -1
-            switch player.player.state {
-            case .buffering:
-                window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset)))
-                break
-            case .playing:
-                window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset)))
-                break
-            default: break
-            }
-        }
-
+    func setVideo() {
+        allowedContentTypes = [.video, .movie]
+         allowsMultipleSelection = false
+         canChooseDirectories = false
+         canCreateDirectories = false
     }
     
 }
-
-
-
-struct VideoViewRep: NSViewRepresentable {
-    
-    func makeNSView(context: Context) -> VideoView {
-        VideoView()
-    }
-    
-    func updateNSView(_ nsView: VideoView, context: Context) {
-    }
-    
-    
-    typealias NSViewType = VideoView
-}
-
-
 
 struct ContentView: View {
     @ObservedObject var player = Player.instance
-
+    @State var showFileChooser = false
+    
+    func openVideoFile(_ f: URL) {
+        
+        
+        let media = VLCMedia(url: f)
+        player.play(media)
+    }
+    
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             GeometryReader { geo in
                 VideoViewRep()
                     .frame(width: geo.size.width, height: geo.size.height)
             }
+            HStack{
+                Spacer()
+                VStack(alignment: .center, spacing: 20) {
+                    Button(action: {
+                        
+                    }, label: {
+                        HStack {
+                            Image(systemName: "wifi.circle").font(.largeTitle)
+                            Text("Open URL").font(.headline)
+                        }
+                    }).buttonStyle(.plain)
+                    Button(action: {
+                        let panel = NSOpenPanel()
+                        panel.setVideo()
+                        if panel.runModal() == .OK {
+                            openVideoFile(panel.url!.standardized)
+                        }
+                    }, label: {
+                        HStack {
+                            Image(systemName: "film").font(.largeTitle)
+                            Text("Open file").font(.headline)
+                        }
+                    }).buttonStyle(.plain)
+                }.padding()
+                Spacer()
+            }.frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity
+            ).opacity(player.playing ? 0 : 1)
             HStack {
                 Image(systemName: "speaker.slash")
                     .font(.title)
                     .padding()
                     .foregroundColor(.white)
-                    .opacity(player.muted ? 0.8 : 0)
+                    .opacity(player.mute ? 0.8 : 0)
                 Spacer()
                 Image(systemName: "paperclip")
                     .font(.title)
@@ -119,6 +83,8 @@ struct ContentView: View {
         .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
         }.aspectRatio(16/9, contentMode: .fit)
-            .border(.regularMaterial, width: player.borderWidth).cornerRadius(5)
+            .border(.clear, width: player.borderWidth)
+            .cornerRadius(player.borderWidth)
+            .opacity(player.opacity)
     }
 }
