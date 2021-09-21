@@ -24,6 +24,8 @@
 		161F9C6026F4B436005D3739 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C5F26F4B436005D3739 /* Menu.swift */; };
 		161F9C6226F4B8A0005D3739 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C6126F4B8A0005D3739 /* Player.swift */; };
 		168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D253C26FA8C7E004CBA39 /* VideoView.swift */; };
+		168D254026FA97EA004CBA39 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 168D253F26FA97EA004CBA39 /* Preferences */; };
+		168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D254326FA9B24004CBA39 /* PreferencesView.swift */; };
 		16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129B26F49B5A002467A7 /* wipyApp.swift */; };
 		16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129D26F49B5A002467A7 /* ContentView.swift */; };
 		16A012A026F49B5B002467A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16A0129F26F49B5B002467A7 /* Assets.xcassets */; };
@@ -53,6 +55,7 @@
 		161F9C5F26F4B436005D3739 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		161F9C6126F4B8A0005D3739 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		168D253C26FA8C7E004CBA39 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		168D254326FA9B24004CBA39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		16A0129826F49B5A002467A7 /* wipy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wipy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16A0129B26F49B5A002467A7 /* wipyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wipyApp.swift; sourceTree = "<group>"; };
 		16A0129D26F49B5A002467A7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,6 +77,7 @@
 				161F9C5326F49C67005D3739 /* OpenGL.framework in Frameworks */,
 				10E20A83011499C1EE1F25E9 /* Pods_wipy.framework in Frameworks */,
 				161F9C3F26F49C20005D3739 /* AudioToolbox.framework in Frameworks */,
+				168D254026FA97EA004CBA39 /* Preferences in Frameworks */,
 				161F9C4926F49C3C005D3739 /* CoreText.framework in Frameworks */,
 				161F9C4326F49C2A005D3739 /* CFNetwork.framework in Frameworks */,
 				161F9C5526F49C6D005D3739 /* Quartz.framework in Frameworks */,
@@ -126,6 +130,7 @@
 				161F9C5F26F4B436005D3739 /* Menu.swift */,
 				161F9C6126F4B8A0005D3739 /* Player.swift */,
 				168D253C26FA8C7E004CBA39 /* VideoView.swift */,
+				168D254326FA9B24004CBA39 /* PreferencesView.swift */,
 			);
 			path = wipy;
 			sourceTree = "<group>";
@@ -172,6 +177,9 @@
 			dependencies = (
 			);
 			name = wipy;
+			packageProductDependencies = (
+				168D253F26FA97EA004CBA39 /* Preferences */,
+			);
 			productName = wipy;
 			productReference = 16A0129826F49B5A002467A7 /* wipy.app */;
 			productType = "com.apple.product-type.application";
@@ -201,6 +209,9 @@
 				Base,
 			);
 			mainGroup = 16A0128F26F49B5A002467A7;
+			packageReferences = (
+				168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */,
+			);
 			productRefGroup = 16A0129926F49B5A002467A7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -272,6 +283,7 @@
 				161F9C5E26F49CFB005D3739 /* header.m in Sources */,
 				16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */,
 				161F9C6026F4B436005D3739 /* Menu.swift in Sources */,
+				168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */,
 				161F9C6226F4B8A0005D3739 /* Player.swift in Sources */,
 				16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */,
 			);
@@ -488,6 +500,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Preferences";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		168D253F26FA97EA004CBA39 /* Preferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */;
+			productName = Preferences;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 16A0129026F49B5A002467A7 /* Project object */;
 }

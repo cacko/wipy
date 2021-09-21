@@ -8,6 +8,10 @@
 import SwiftUI
 import VLCKit
 import AppKit
+import Preferences
+
+
+
 
 extension NSOpenPanel {
 
@@ -23,6 +27,7 @@ extension NSOpenPanel {
 struct ContentView: View {
     @ObservedObject var player = Player.instance
     @State var showFileChooser = false
+
     
     func openVideoFile(_ f: URL) {
         
@@ -86,5 +91,6 @@ struct ContentView: View {
             .border(.clear, width: player.borderWidth)
             .cornerRadius(player.borderWidth)
             .opacity(player.opacity)
+        
     }
 }

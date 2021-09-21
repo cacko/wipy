@@ -10,6 +10,7 @@ import SwiftUI
 import AppKit
 import IOKit
 import IOKit.pwr_mgt
+import Preferences
 
 enum Streams: String {
     
@@ -33,6 +34,8 @@ class StreamItem: CrapItem {
     
 }
 
+
+
 class CrapItem: NSMenuItem, NSUserInterfaceValidations {
         
     func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
@@ -47,7 +50,9 @@ class StreamMenu: CrapMenu {
             StreamItem(title:"Usman",  action: #selector(onStream(sender:)), keyEquivalent: "1", media: VLCMedia(url: _url(.usman))),
             StreamItem(title: "Bunny",action: #selector(onStream(sender:)), keyEquivalent: "2", media: VLCMedia(url: _url(.bunny))),
             StreamItem(title: "Mp4",action: #selector(onStream(sender:)), keyEquivalent: "3", media: VLCMedia(url: _url(.mp4))),
-            ]
+            NSMenuItem.separator(),
+            CrapItem(title: "Preferences", action: #selector(onPreferences(sender:)), keyEquivalent: ",")
+        ]
         
     }}
     
@@ -158,6 +163,15 @@ class CrapMenu: NSMenu {
         player.play(sender.media)
     }
     
+    @objc func onPreferences(sender: StreamItem) {
+        parent.preferences.show()
+        if (parent.isFloating) {
+            parent.preferences.window?.level = .floating
+        }
+        parent.preferences.window?.orderFrontRegardless()
+        parent.window.orderBack(nil)
+    }
+    
 }
 
 class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidations{
@@ -172,6 +186,7 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     var view: ContentView
     var window: NSWindow
     var mainMenu: NSMenu
+    var preferences: PreferencesWindowController
     var player = Player.instance
     
     var noSleepAssertionID: IOPMAssertionID = 0
@@ -223,9 +238,10 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     
 
     
-    init(_ _view: ContentView, _ _window: NSWindow) {
+    init(_ _view: ContentView, _ _window: NSWindow, _ _prefs: PreferencesWindowController) {
         view = _view
         window = _window
+        preferences = _prefs
         mainMenu = NSApplication.shared.mainMenu ?? NSMenu()
         super.init(title: "")
         self._init()

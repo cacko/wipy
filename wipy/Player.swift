@@ -50,7 +50,6 @@ class Player: NSObject, ObservableObject  {
         initliazed = true
         media = u
         player.media = u
-        print(media)
         player.play()
     }
     

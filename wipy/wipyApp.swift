@@ -8,6 +8,8 @@
 import SwiftUI
 import AppKit
 import Combine
+import Preferences
+
 
 @main
 struct wipyApp: App {
@@ -37,6 +39,10 @@ extension NSWindow.StyleMask {
     }
 }
 
+
+extension Preferences.PaneIdentifier {
+    static let accounts = Self("accounts")
+}
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -68,7 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let contentViewController = NSHostingController(rootView: contentView)
 
-        let menu = Menu(contentView, window)
+        let menu = Menu(contentView, window, preferencesWindowController)
 
         window.center()
         window.setFrameAutosaveName("Main Window")
@@ -84,5 +90,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
         menu.isFloating.toggle()
     }
+    
+    let AccountsPreferenceViewController: () -> PreferencePane = {
+        /// Wrap your custom view into `Preferences.Pane`, while providing necessary toolbar info.
+        let paneView = Preferences.Pane(
+            identifier: .accounts,
+            title: "Accounts",
+            toolbarIcon: NSImage(systemSymbolName: "person.crop.circle", accessibilityDescription: "Accounts preferences")!
+        ) {
+            PreferencesView()
+        }
+
+        return Preferences.PaneHostingController(pane: paneView)
+    }
+
+
+    private lazy var preferences: [PreferencePane] = [
+        AccountsPreferenceViewController(),
+    ]
+    
+    private lazy var preferencesWindowController = PreferencesWindowController(
+        preferencePanes: preferences,
+        style: .segmentedControl,
+        animated: true,
+        hidesToolbarForSingleItem: true
+    )
 
 }
