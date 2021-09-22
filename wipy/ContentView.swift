@@ -34,10 +34,14 @@ struct ContentView: View {
     }
     
     func startVideo() {
-        let stream1 = UserDefaults.standard.string(forKey: Defaults.Keys.stream1Url.name)
-        if ((stream1) != nil) {
-            player.play(VLCMedia(url: URL(string: stream1!)!))
+        guard player.playing else {
+            let stream1 = UserDefaults.standard.string(forKey: Defaults.Keys.stream1Url.name)
+            if ((stream1) != nil) {
+                player.play(VLCMedia(url: URL(string: stream1!)!))
+            }
+            return
         }
+
     }
     
     var body: some View {
