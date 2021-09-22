@@ -26,6 +26,7 @@
 		168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D253C26FA8C7E004CBA39 /* VideoView.swift */; };
 		168D254026FA97EA004CBA39 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 168D253F26FA97EA004CBA39 /* Preferences */; };
 		168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D254326FA9B24004CBA39 /* PreferencesView.swift */; };
+		168D254726FAA5ED004CBA39 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 168D254626FAA5ED004CBA39 /* Defaults */; };
 		16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129B26F49B5A002467A7 /* wipyApp.swift */; };
 		16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129D26F49B5A002467A7 /* ContentView.swift */; };
 		16A012A026F49B5B002467A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16A0129F26F49B5B002467A7 /* Assets.xcassets */; };
@@ -79,6 +80,7 @@
 				161F9C3F26F49C20005D3739 /* AudioToolbox.framework in Frameworks */,
 				168D254026FA97EA004CBA39 /* Preferences in Frameworks */,
 				161F9C4926F49C3C005D3739 /* CoreText.framework in Frameworks */,
+				168D254726FAA5ED004CBA39 /* Defaults in Frameworks */,
 				161F9C4326F49C2A005D3739 /* CFNetwork.framework in Frameworks */,
 				161F9C5526F49C6D005D3739 /* Quartz.framework in Frameworks */,
 				161F9C4126F49C25005D3739 /* AVFoundation.framework in Frameworks */,
@@ -179,6 +181,7 @@
 			name = wipy;
 			packageProductDependencies = (
 				168D253F26FA97EA004CBA39 /* Preferences */,
+				168D254626FAA5ED004CBA39 /* Defaults */,
 			);
 			productName = wipy;
 			productReference = 16A0129826F49B5A002467A7 /* wipy.app */;
@@ -211,6 +214,7 @@
 			mainGroup = 16A0128F26F49B5A002467A7;
 			packageReferences = (
 				168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */,
+				168D254526FAA5ED004CBA39 /* XCRemoteSwiftPackageReference "Defaults" */,
 			);
 			productRefGroup = 16A0129926F49B5A002467A7 /* Products */;
 			projectDirPath = "";
@@ -510,6 +514,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		168D254526FAA5ED004CBA39 /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Defaults";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -517,6 +529,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */;
 			productName = Preferences;
+		};
+		168D254626FAA5ED004CBA39 /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 168D254526FAA5ED004CBA39 /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,8 +9,7 @@ import SwiftUI
 import VLCKit
 import AppKit
 import Preferences
-
-
+import Defaults
 
 
 extension NSOpenPanel {
@@ -30,10 +29,15 @@ struct ContentView: View {
 
     
     func openVideoFile(_ f: URL) {
-        
-        
         let media = VLCMedia(url: f)
         player.play(media)
+    }
+    
+    func startVideo() {
+        let stream1 = UserDefaults.standard.string(forKey: Defaults.Keys.stream1Url.name)
+        if ((stream1) != nil) {
+            player.play(VLCMedia(url: URL(string: stream1!)!))
+        }
     }
     
     var body: some View {
@@ -41,6 +45,7 @@ struct ContentView: View {
             GeometryReader { geo in
                 VideoViewRep()
                     .frame(width: geo.size.width, height: geo.size.height)
+                    .onAppear(perform: startVideo)
             }
             HStack{
                 Spacer()

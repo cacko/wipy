@@ -11,12 +11,45 @@ import AppKit
 import IOKit
 import IOKit.pwr_mgt
 import Preferences
+import Defaults
 
-enum Streams: String {
+class Stream {
     
-    case mp4 = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-    case usman = "rtsp://192.168.0.105:8554/unicast"
-    case bunny = "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"
+    var title: String
+    
+    var url: URL
+    
+    var isValid: Bool {
+        get {
+            self.title.count > 0 && self.url.absoluteString.count > 0
+        }
+    }
+    
+    init(title: String?, url: String?) {
+        self.title = title ?? ""
+        self.url = URL(string: url ?? "") ?? URL(fileURLWithPath: "")
+    }
+    
+}
+
+class Streams {
+    
+    var streams: [Stream] {
+        get {
+            var res: [Stream] = []
+            for key in [
+                [Defaults.Keys.stream1Label.name, Defaults.Keys.stream1Url.name],
+                [Defaults.Keys.stream2Label.name, Defaults.Keys.stream2Url.name],
+                [Defaults.Keys.stream3Label.name, Defaults.Keys.stream3Url.name]
+            ] {
+                let stream = Stream(title: UserDefaults.standard.string(forKey: key[0]), url: UserDefaults.standard.string(forKey: key[1]))
+                if (stream.isValid) {
+                    res.append(stream)
+                }
+            }
+            return res
+        }
+    }
 }
 
 class StreamItem: CrapItem {
@@ -35,7 +68,6 @@ class StreamItem: CrapItem {
 }
 
 
-
 class CrapItem: NSMenuItem, NSUserInterfaceValidations {
         
     func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
@@ -45,25 +77,27 @@ class CrapItem: NSMenuItem, NSUserInterfaceValidations {
 
 class StreamMenu: CrapMenu {
     
+    var streams = Streams()
+    
     override var actions: Array<NSMenuItem> { get {
-         [
-            StreamItem(title:"Usman",  action: #selector(onStream(sender:)), keyEquivalent: "1", media: VLCMedia(url: _url(.usman))),
-            StreamItem(title: "Bunny",action: #selector(onStream(sender:)), keyEquivalent: "2", media: VLCMedia(url: _url(.bunny))),
-            StreamItem(title: "Mp4",action: #selector(onStream(sender:)), keyEquivalent: "3", media: VLCMedia(url: _url(.mp4))),
+        var res: [NSMenuItem] = []
+        for stream in streams.streams {
+            res.append(StreamItem(title: stream.title,  action: #selector(onStream(sender:)), keyEquivalent: "1", media: VLCMedia(url: stream.url)))
+        }
+
+        res += [
             NSMenuItem.separator(),
             CrapItem(title: "Preferences", action: #selector(onPreferences(sender:)), keyEquivalent: ",")
         ]
         
-    }}
-    
-    func _url(_ u: Streams) -> URL {
-        URL(string: u.rawValue)!
+        return res
+        
+        }
     }
     
     override func _init() {
         guard actions.count == 0 else {
             for item in actions {
-
                 item.target = self
                 self.addItem(item)
             }
