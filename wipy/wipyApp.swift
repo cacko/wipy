@@ -20,6 +20,15 @@ struct wipyApp: App {
     }
 }
 
+extension Notification.Name {
+    static let closeWindow = NSNotification.Name("close_window")
+    static let openWindow = NSNotification.Name("open_window")
+}
+
+
+enum WindowController {
+    case urlmodal,main,prefences
+}
 
 class MainWindowController: NSWindowController, NSWindowDelegate {
 
@@ -41,7 +50,8 @@ extension NSWindow.StyleMask {
 
 
 extension Preferences.PaneIdentifier {
-    static let accounts = Self("accounts")
+    static let streams = Self("streams")
+    static let urlinput = Self("urlinput")
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -51,7 +61,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let windowController: MainWindowController
 
     var fixedRatio = NSSize(width: 1920, height: 1080)
-
+    
+    
     override init() {
         window  = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 0, height: 0),
@@ -69,12 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let app:NSApplication = notification.object as! NSApplication
         let crapwindow = app.windows.first
             crapwindow?.setIsVisible(false)
-
-        let contentView = ContentView()
-
         let contentViewController = NSHostingController(rootView: contentView)
-
-        let menu = Menu(contentView, window, preferencesWindowController)
 
         window.center()
         window.setFrameAutosaveName("Main Window")
@@ -88,28 +94,73 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowController.window?.delegate = windowController
         windowController.showWindow(self)
         window.makeKeyAndOrderFront(nil)
+        
+        let menu = Menu(delegate: self)
         menu.isFloating.toggle()
+        
+        let center = NotificationCenter.default
+        let mainQueue = OperationQueue.main
+        
+        center.addObserver(forName: .closeWindow, object: nil, queue: mainQueue) {(note) in
+            let obj: WindowController = note.object as! WindowController
+            switch obj {
+            case .urlmodal:
+                self.urlModalController.close()
+                break
+            case .prefences:
+                self.urlModalController.close()
+            default:
+                break
+            }
+        }
+        
+        
     }
     
-    let AccountsPreferenceViewController: () -> PreferencePane = {
+    let StreamsPreferencesView: () -> PreferencePane = {
         /// Wrap your custom view into `Preferences.Pane`, while providing necessary toolbar info.
         let paneView = Preferences.Pane(
-            identifier: .accounts,
-            title: "Accounts",
-            toolbarIcon: NSImage(systemSymbolName: "person.crop.circle", accessibilityDescription: "Accounts preferences")!
+            identifier: .streams,
+            title: "Streams",
+            toolbarIcon: NSImage(systemSymbolName: "person.crop.circle", accessibilityDescription: "Streams preferences")!
         ) {
             PreferencesView()
         }
 
         return Preferences.PaneHostingController(pane: paneView)
     }
+    
+    let UrlInputVuew: () -> PreferencePane = {
+        /// Wrap your custom view into `Preferences.Pane`, while providing necessary toolbar info.
+        let paneView = Preferences.Pane(
+            identifier: .urlinput,
+            title: "Url",
+            toolbarIcon: NSImage(systemSymbolName: "person.crop.circle", accessibilityDescription: "Streams preferences")!
+        ) {
+            UrlModal()
+        }
 
-
-    private lazy var preferences: [PreferencePane] = [
-        AccountsPreferenceViewController(),
+        return Preferences.PaneHostingController(pane: paneView)
+    }
+    
+    lazy var contentView = ContentView()
+    
+    private lazy var urlmodal: [PreferencePane] = [
+        UrlInputVuew(),
     ]
     
-    private lazy var preferencesWindowController = PreferencesWindowController(
+    lazy var urlModalController = PreferencesWindowController(
+        preferencePanes: urlmodal,
+        style: .segmentedControl,
+        animated: true,
+        hidesToolbarForSingleItem: true
+    )
+    
+    private lazy var preferences: [PreferencePane] = [
+        StreamsPreferencesView(),
+    ]
+    
+    lazy var preferencesWindowController = PreferencesWindowController(
         preferencePanes: preferences,
         style: .segmentedControl,
         animated: true,

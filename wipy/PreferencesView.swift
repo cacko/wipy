@@ -8,6 +8,7 @@
 import Preferences
 import SwiftUI
 import Defaults
+import VLCKit
 
 
 extension Defaults.Keys {
@@ -17,6 +18,42 @@ extension Defaults.Keys {
     static let stream1Label = Key<String>("stream1label", default: "")
     static let stream2Label = Key<String>("stream2label", default: "")
     static let stream3Label = Key<String>("stream3label", default: "")
+}
+
+struct UrlModal: View {
+    
+    @State var url: String = ""
+    
+    private let contentWidth: Double = 450.0
+    
+    func play() {
+        let mediaUrl =  URL(string: self.url)
+        let media = VLCMedia(url: mediaUrl!)
+        Player.instance.play(media)
+        NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
+    }
+    
+    func close() {
+        NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
+    }
+    
+    var body: some View {
+        Preferences.Container(contentWidth: contentWidth) {
+            Preferences.Section(title: "Stream") {
+                VStack(spacing: 15) {
+                    TextField("URL", text: $url)
+                    HStack {
+                        Button("Open") {
+                            play()
+                        }
+                        Button("Close") {
+                            close()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 

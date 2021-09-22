@@ -87,6 +87,8 @@ class StreamMenu: CrapMenu {
 
         res += [
             NSMenuItem.separator(),
+            CrapItem(title: "Open file...", action: #selector(onOpenFile(sender:)), keyEquivalent: "o"),
+            CrapItem(title: "Open url...", action: #selector(onOpenUrl(sender:)), keyEquivalent: "u"),
             CrapItem(title: "Preferences", action: #selector(onPreferences(sender:)), keyEquivalent: ",")
         ]
         
@@ -197,6 +199,19 @@ class CrapMenu: NSMenu {
         player.play(sender.media)
     }
     
+    @objc func onOpenFile(sender: StreamItem) {
+        parent.view.showOpenFile()
+    }
+    
+    @objc func onOpenUrl(sender: StreamItem) {
+        parent.urlmodal.show()
+        if (parent.isFloating) {
+            parent.urlmodal.window?.level = .floating
+        }
+        parent.urlmodal.window?.orderFrontRegardless()
+        parent.window.orderBack(nil)
+    }
+    
     @objc func onPreferences(sender: StreamItem) {
         parent.preferences.show()
         if (parent.isFloating) {
@@ -221,6 +236,7 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     var window: NSWindow
     var mainMenu: NSMenu
     var preferences: PreferencesWindowController
+    var urlmodal: PreferencesWindowController
     var player = Player.instance
     
     var noSleepAssertionID: IOPMAssertionID = 0
@@ -272,10 +288,11 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     
 
     
-    init(_ _view: ContentView, _ _window: NSWindow, _ _prefs: PreferencesWindowController) {
-        view = _view
-        window = _window
-        preferences = _prefs
+    init(delegate: AppDelegate) {
+        self.view = delegate.contentView
+        self.window = delegate.window
+        self.preferences = delegate.preferencesWindowController
+        self.urlmodal = delegate.urlModalController
         mainMenu = NSApplication.shared.mainMenu ?? NSMenu()
         super.init(title: "")
         self._init()

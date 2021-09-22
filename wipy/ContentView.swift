@@ -12,6 +12,7 @@ import Preferences
 import Defaults
 
 
+
 extension NSOpenPanel {
 
     func setVideo() {
@@ -20,16 +21,28 @@ extension NSOpenPanel {
          canChooseDirectories = false
          canCreateDirectories = false
     }
-    
 }
 
 struct ContentView: View {
     @ObservedObject var player = Player.instance
-    @State var showFileChooser = false
-
+    @State var url = ""
     
+    func showOpenFile() {
+        let panel = NSOpenPanel()
+        panel.setVideo()
+        if panel.runModal() == .OK {
+            openVideoFile(panel.url!.standardized)
+        }
+    }
+    
+    func showOpenUrl() {
+        
+    }
+    
+
     func openVideoFile(_ f: URL) {
         let media = VLCMedia(url: f)
+        player.allowOpen = false
         player.play(media)
     }
     
@@ -37,6 +50,7 @@ struct ContentView: View {
         guard player.playing else {
             let stream1 = UserDefaults.standard.string(forKey: Defaults.Keys.stream1Url.name)
             if ((stream1) != nil) {
+                player.allowOpen = false
                 player.play(VLCMedia(url: URL(string: stream1!)!))
             }
             return
@@ -54,21 +68,13 @@ struct ContentView: View {
             HStack{
                 Spacer()
                 VStack(alignment: .center, spacing: 20) {
-                    Button(action: {
-                        
-                    }, label: {
+                    Button(action: showOpenUrl, label: {
                         HStack {
                             Image(systemName: "wifi.circle").font(.largeTitle)
                             Text("Open URL").font(.headline)
                         }
                     }).buttonStyle(.plain)
-                    Button(action: {
-                        let panel = NSOpenPanel()
-                        panel.setVideo()
-                        if panel.runModal() == .OK {
-                            openVideoFile(panel.url!.standardized)
-                        }
-                    }, label: {
+                    Button(action: showOpenFile, label: {
                         HStack {
                             Image(systemName: "film").font(.largeTitle)
                             Text("Open file").font(.headline)
@@ -79,7 +85,7 @@ struct ContentView: View {
             }.frame(
                 maxWidth: .infinity,
                 maxHeight: .infinity
-            ).opacity(player.playing ? 0 : 1)
+            ).opacity(player.allowOpen ? 1 : 0)
             HStack {
                 Image(systemName: "speaker.slash")
                     .font(.title)
@@ -97,9 +103,8 @@ struct ContentView: View {
         .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
         }.aspectRatio(16/9, contentMode: .fit)
-            .border(.clear, width: player.borderWidth)
+            .border(.background, width: player.borderWidth)
             .cornerRadius(player.borderWidth)
             .opacity(player.opacity)
-        
     }
 }

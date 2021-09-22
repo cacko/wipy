@@ -36,6 +36,7 @@ class Player: NSObject, ObservableObject  {
     @Published var media: VLCMedia = VLCMedia()
     @Published var playing: Bool = false
     @Published var opacity = 0.5
+    @Published var allowOpen = false
     @Published var mute = false {
         didSet {
             player.audio.volume = mute ? 0 : 100
