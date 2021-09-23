@@ -87,13 +87,13 @@ struct ContentView: View {
                 maxHeight: .infinity
             ).opacity(player.allowOpen ? 1 : 0)
             HStack {
-                Image(systemName: "speaker.slash")
+                Image(systemName: "speaker.slash.circle")
                     .font(.title)
                     .padding()
                     .foregroundColor(.white)
                     .opacity(player.mute ? 0.8 : 0)
                 Spacer()
-                Image(systemName: "paperclip")
+                Image(systemName: "rectangle.on.rectangle.circle")
                     .font(.title)
                     .padding()
                     .foregroundColor(.white)
@@ -105,6 +105,5 @@ struct ContentView: View {
         }.aspectRatio(16/9, contentMode: .fit)
             .border(.background, width: player.borderWidth)
             .cornerRadius(player.borderWidth)
-//            .opacity(player.opacity)
     }
 }

@@ -221,7 +221,6 @@
 			packageReferences = (
 				168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */,
 				168D254526FAA5ED004CBA39 /* XCRemoteSwiftPackageReference "Defaults" */,
-				1602A64D26FC3AA80030A1BC /* XCRemoteSwiftPackageReference "Insomnia" */,
 			);
 			productRefGroup = 16A0129926F49B5A002467A7 /* Products */;
 			projectDirPath = "";
@@ -430,7 +429,7 @@
 				CODE_SIGN_ENTITLEMENTS = wipy/wipy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = SPBF9BNRG3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -466,7 +465,7 @@
 				CODE_SIGN_ENTITLEMENTS = wipy/wipy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = SPBF9BNRG3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -515,14 +514,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1602A64D26FC3AA80030A1BC /* XCRemoteSwiftPackageReference "Insomnia" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ochococo/Insomnia";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Preferences";
