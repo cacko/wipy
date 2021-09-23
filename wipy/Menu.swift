@@ -210,6 +210,7 @@ class CrapMenu: NSMenu {
         }
         parent.urlmodal.window?.orderFrontRegardless()
         parent.window.orderBack(nil)
+        parent.urlmodal.becomeFirstResponder()
     }
     
     @objc func onPreferences(sender: StreamItem) {

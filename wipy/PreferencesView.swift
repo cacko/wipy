@@ -20,41 +20,6 @@ extension Defaults.Keys {
     static let stream3Label = Key<String>("stream3label", default: "")
 }
 
-struct UrlModal: View {
-    
-    @State var url: String = ""
-    
-    private let contentWidth: Double = 450.0
-    
-    func play() {
-        let mediaUrl =  URL(string: self.url)
-        let media = VLCMedia(url: mediaUrl!)
-        Player.instance.play(media)
-        NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
-    }
-    
-    func close() {
-        NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
-    }
-    
-    var body: some View {
-        Preferences.Container(contentWidth: contentWidth) {
-            Preferences.Section(title: "Stream") {
-                VStack(spacing: 15) {
-                    TextField("URL", text: $url)
-                    HStack {
-                        Button("Open") {
-                            play()
-                        }
-                        Button("Close") {
-                            close()
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 
 struct PreferencesView: View {
@@ -66,29 +31,29 @@ struct PreferencesView: View {
     @Default(.stream2Url) var url2
     @Default(.stream3Url) var url3
 
-
     private let contentWidth: Double = 450.0
-    
+    private let padding: Double = 15
+        
     var body: some View {
         Preferences.Container(contentWidth: contentWidth) {
             Preferences.Section(title: "Stream 1") {
-                VStack(spacing: 15) {
+                VStack(spacing: self.padding) {
                     TextField("Title", text: $label1)
                     TextField("URL", text: $url1)
                 }
             }
             Preferences.Section(title: "Stream 2") {
-                VStack(spacing: 15) {
+                VStack(spacing: self.padding) {
                     TextField("Title", text: $label2)
                     TextField("URL", text: $url2)
                 }
             }
             Preferences.Section(title: "Stream 3") {
-                VStack(spacing: 15) {
+                VStack(spacing: self.padding) {
                     TextField("Title", text: $label3)
                     TextField("URL", text: $url3)
                 }
             }
-        }
+        }.textFieldStyle(.roundedBorder)
     }
 }

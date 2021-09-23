@@ -26,7 +26,7 @@ struct DeviceError: Error, Identifiable {
 }
 
 
-class Player: NSObject, ObservableObject  {
+class Player: NSObject, ObservableObject, VLCMediaDelegate, VLCMediaPlayerDelegate  {
     @Published var borderWidth: CGFloat = 5
     @Published var error: DeviceError? = nil
     @Published var resolution: CGSize = CGSize(width: 1920, height: 1080)
@@ -46,10 +46,21 @@ class Player: NSObject, ObservableObject  {
     static let instance: Player = { Player() }()
     
     var player = VLCMediaPlayer()
+    
+    var drawable: VideoView {
+        get {
+            player.drawable as! VideoView
+        }
+        set {
+            player.drawable = newValue
+        }
+    }
                     
     func play(_ u: VLCMedia) {
         initliazed = true
         media = u
+        media.delegate = self
+        player.delegate = self
         player.media = u
         player.play()
     }
@@ -58,5 +69,36 @@ class Player: NSObject, ObservableObject  {
         player.stop()
         playing = false
         player.media = nil
+    }
+    
+    private let contentWidth: Double = 450.0
+    
+    func play(url: URL) {
+        let media = VLCMedia(url: url)
+        Player.instance.play(media)
+        NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
+    }
+    
+    func mediaPlayerStateChanged(_ aNotification: Notification!) {
+        CATransaction.disableAnimations {
+            switch player.state {
+                case .buffering:
+                print("buff")
+                drawable.hack()
+                    break
+                case .playing:
+                print("play")
+                drawable.hack()
+                    break
+                default: break
+            }
+            playing = true
+
+        }
+
+    }
+    
+    func mediaMetaDataDidChange(_ m: VLCMedia) {
+        print(m.metaDictionary)
     }
 }

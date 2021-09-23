@@ -35,8 +35,7 @@ class VideoView: VLCVideoView, VLCMediaPlayerDelegate
     
     init() {
         super.init(frame: .zero)
-        player.player.drawable = self
-        player.player.delegate = self
+        player.drawable = self
         window?.isMovableByWindowBackground = true
     }
     
@@ -51,31 +50,12 @@ class VideoView: VLCVideoView, VLCMediaPlayerDelegate
         }
       }
     
-    private func hack() {
+    func hack() {
         let size = window?.frame.size
         lastOFfset *= -1
         window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset)))
         player.opacity = 1
     }
-
-
-    func mediaPlayerStateChanged(_ aNotification: Notification!) {
-        CATransaction.disableAnimations {
-            switch player.player.state {
-                case .buffering:
-                    hack()
-                    break
-                case .playing:
-                    hack()
-                    break
-                default: break
-            }
-            player.playing = true
-
-        }
-
-    }
-    
 }
 
 
