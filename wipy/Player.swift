@@ -26,7 +26,7 @@ struct DeviceError: Error, Identifiable {
 }
 
 
-class Player: NSObject, ObservableObject, VLCMediaDelegate, VLCMediaPlayerDelegate  {
+class Player: NSObject, ObservableObject, VLCMediaPlayerDelegate  {
     @Published var borderWidth: CGFloat = 5
     @Published var error: DeviceError? = nil
     @Published var resolution: CGSize = CGSize(width: 1920, height: 1080)
@@ -59,7 +59,6 @@ class Player: NSObject, ObservableObject, VLCMediaDelegate, VLCMediaPlayerDelega
     func play(_ u: VLCMedia) {
         initliazed = true
         media = u
-        media.delegate = self
         player.delegate = self
         player.media = u
         player.play()
@@ -75,27 +74,26 @@ class Player: NSObject, ObservableObject, VLCMediaDelegate, VLCMediaPlayerDelega
     
     func play(url: URL) {
         let media = VLCMedia(url: url)
-        Player.instance.play(media)
+        play(media)
         NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
     }
-    
-    func mediaPlayerStateChanged(_ aNotification: Notification!) {
+        
+    func mediaPlayerStateChanged(_ aNotification: Notification?) {
         CATransaction.disableAnimations {
-            switch player.state {
-                case .buffering:
-                print("buff")
-                    break
-                case .playing:
-                drawable.hack()
-                    break
-                default: break
+            
+            if player.state == .error {
+                error = DeviceError(id: .trackFailed, msg: "ff")
             }
-            playing = true
-
+            
+            guard media.state != .playing || playing else {
+                let size = player.videoSize
+                guard size.width == 0 else {
+                    playing = true
+                    NotificationCenter.default.post(Notification(name: .hack, object: nil))
+                    return
+                }
+                return
+            }
         }
-
-    }
-    
-    func mediaMetaDataDidChange(_ m: VLCMedia) {
     }
 }

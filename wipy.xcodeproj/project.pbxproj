@@ -25,7 +25,6 @@
 		161F9C6026F4B436005D3739 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C5F26F4B436005D3739 /* Menu.swift */; };
 		161F9C6226F4B8A0005D3739 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C6126F4B8A0005D3739 /* Player.swift */; };
 		1647F78A26FBFD8F0011FD93 /* UrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647F78926FBFD8F0011FD93 /* UrlView.swift */; };
-		165008DE26FC1E61008A832A /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165008DD26FC1E60008A832A /* TextField.swift */; };
 		168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D253C26FA8C7E004CBA39 /* VideoView.swift */; };
 		168D254026FA97EA004CBA39 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 168D253F26FA97EA004CBA39 /* Preferences */; };
 		168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D254326FA9B24004CBA39 /* PreferencesView.swift */; };
@@ -60,7 +59,6 @@
 		161F9C5F26F4B436005D3739 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		161F9C6126F4B8A0005D3739 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1647F78926FBFD8F0011FD93 /* UrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlView.swift; sourceTree = "<group>"; };
-		165008DD26FC1E60008A832A /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		168D253C26FA8C7E004CBA39 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		168D254326FA9B24004CBA39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		16A0129826F49B5A002467A7 /* wipy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wipy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,7 +138,6 @@
 				168D253C26FA8C7E004CBA39 /* VideoView.swift */,
 				168D254326FA9B24004CBA39 /* PreferencesView.swift */,
 				1647F78926FBFD8F0011FD93 /* UrlView.swift */,
-				165008DD26FC1E60008A832A /* TextField.swift */,
 				1602A65026FC3E4D0030A1BC /* MainWindow.swift */,
 			);
 			path = wipy;
@@ -300,7 +297,6 @@
 				161F9C6026F4B436005D3739 /* Menu.swift in Sources */,
 				168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */,
 				161F9C6226F4B8A0005D3739 /* Player.swift in Sources */,
-				165008DE26FC1E61008A832A /* TextField.swift in Sources */,
 				1647F78A26FBFD8F0011FD93 /* UrlView.swift in Sources */,
 				16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */,
 			);

@@ -23,6 +23,7 @@ extension Notification.Name {
     static let closeWindow = NSNotification.Name("close_window")
     static let openWindow = NSNotification.Name("open_window")
     static let fullscreen = NSNotification.Name("fullscreen")
+    static let hack = NSNotification.Name("hack")
 }
 
 
@@ -54,6 +55,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let windowController: MainWindowController
 
     var fixedRatio = NSSize(width: 1920, height: 1080)
+    
+    var lastOffset: CGFloat = 1.0
         
     
     override init() {
@@ -119,6 +122,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             default:
                 break
             }
+        }
+        
+        center.addObserver(forName: .hack, object: nil, queue: mainQueue) {(note) in
+            var size = self.window.frame.size
+            size.width += self.lastOffset
+            size.height += self.lastOffset
+            self.window.setContentSize(size)
         }
     }
     

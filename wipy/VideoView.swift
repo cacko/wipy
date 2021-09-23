@@ -30,9 +30,6 @@ class VideoView: VLCVideoView, VLCMediaPlayerDelegate
 
     var player: Player = Player.instance
     
-    private var lastOFfset = 1
-    
-    
     init() {
         super.init(frame: .zero)
         player.drawable = self
@@ -49,18 +46,14 @@ class VideoView: VLCVideoView, VLCMediaPlayerDelegate
             return
         }
       }
-    
-    func hack() {
-        let size = window?.frame.size
-        lastOFfset *= -1
-        window?.setContentSize(NSSize(width: size!.width, height: size!.height + CGFloat(lastOFfset)))
-        player.opacity = 1
-    }
 }
 
 
 
 struct VideoViewRep: NSViewRepresentable {
+    
+    typealias NSViewType = VideoView
+
     
     func makeNSView(context: Context) -> VideoView {
         VideoView()
@@ -70,5 +63,4 @@ struct VideoViewRep: NSViewRepresentable {
     }
     
     
-    typealias NSViewType = VideoView
 }
