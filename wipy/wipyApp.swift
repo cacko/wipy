@@ -10,7 +10,6 @@ import AppKit
 import Combine
 import Preferences
 
-
 @main
 struct wipyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -23,21 +22,15 @@ struct wipyApp: App {
 extension Notification.Name {
     static let closeWindow = NSNotification.Name("close_window")
     static let openWindow = NSNotification.Name("open_window")
+    static let fullscreen = NSNotification.Name("fullscreen")
 }
+
 
 
 enum WindowController {
     case urlmodal,main,prefences
 }
 
-class MainWindowController: NSWindowController, NSWindowDelegate {
-
-    override func windowDidLoad() {
-        super.windowDidLoad()
-        self.window?.delegate = self
-    }
-
-}
 
 extension NSWindow.StyleMask {
     static var defaultWindow: NSWindow.StyleMask {
@@ -56,15 +49,15 @@ extension Preferences.PaneIdentifier {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var window: NSWindow
+    var window: MainWindow
 
     let windowController: MainWindowController
 
     var fixedRatio = NSSize(width: 1920, height: 1080)
-    
+        
     
     override init() {
-        window  = NSWindow(
+        window  = MainWindow(
             contentRect: NSRect(x: 0, y: 0, width: 0, height: 0),
             styleMask: [.closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
@@ -81,6 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let crapwindow = app.windows.first
             crapwindow?.setIsVisible(false)
         let contentViewController = NSHostingController(rootView: contentView)
+        
 
         window.center()
         window.setFrameAutosaveName("Main Window")
@@ -95,8 +89,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowController.showWindow(self)
         window.makeKeyAndOrderFront(nil)
         
-        let menu = Menu(delegate: self)
-        menu.isFloating.toggle()
+        _ = Menu(delegate: self)
+        window.isFloating.toggle()
         
         let center = NotificationCenter.default
         let mainQueue = OperationQueue.main
@@ -114,7 +108,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         
-        
+        center.addObserver(forName: .openWindow, object: nil, queue: mainQueue) {(note) in
+            let obj: WindowController = note.object as! WindowController
+            switch obj {
+            case .urlmodal:
+                self.urlModalController.close()
+                break
+            case .prefences:
+                self.urlModalController.close()
+            default:
+                break
+            }
+        }
     }
     
     let StreamsPreferencesView: () -> PreferencePane = {
@@ -166,5 +171,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         animated: true,
         hidesToolbarForSingleItem: true
     )
-
 }

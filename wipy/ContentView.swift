@@ -105,6 +105,6 @@ struct ContentView: View {
         }.aspectRatio(16/9, contentMode: .fit)
             .border(.background, width: player.borderWidth)
             .cornerRadius(player.borderWidth)
-            .opacity(player.opacity)
+//            .opacity(player.opacity)
     }
 }

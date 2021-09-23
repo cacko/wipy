@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		10E20A83011499C1EE1F25E9 /* Pods_wipy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351E32BAA540E0CBC08FF0EA /* Pods_wipy.framework */; };
+		1602A65126FC3E4D0030A1BC /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602A65026FC3E4D0030A1BC /* MainWindow.swift */; };
 		161F9C3F26F49C20005D3739 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161F9C3E26F49C20005D3739 /* AudioToolbox.framework */; platformFilter = maccatalyst; };
 		161F9C4126F49C25005D3739 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161F9C4026F49C25005D3739 /* AVFoundation.framework */; platformFilter = maccatalyst; };
 		161F9C4326F49C2A005D3739 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161F9C4226F49C2A005D3739 /* CFNetwork.framework */; platformFilter = maccatalyst; };
@@ -24,6 +25,7 @@
 		161F9C6026F4B436005D3739 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C5F26F4B436005D3739 /* Menu.swift */; };
 		161F9C6226F4B8A0005D3739 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F9C6126F4B8A0005D3739 /* Player.swift */; };
 		1647F78A26FBFD8F0011FD93 /* UrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647F78926FBFD8F0011FD93 /* UrlView.swift */; };
+		165008DE26FC1E61008A832A /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165008DD26FC1E60008A832A /* TextField.swift */; };
 		168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D253C26FA8C7E004CBA39 /* VideoView.swift */; };
 		168D254026FA97EA004CBA39 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 168D253F26FA97EA004CBA39 /* Preferences */; };
 		168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168D254326FA9B24004CBA39 /* PreferencesView.swift */; };
@@ -34,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1602A65026FC3E4D0030A1BC /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		161F9C3E26F49C20005D3739 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		161F9C4026F49C25005D3739 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		161F9C4226F49C2A005D3739 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -57,6 +60,7 @@
 		161F9C5F26F4B436005D3739 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		161F9C6126F4B8A0005D3739 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1647F78926FBFD8F0011FD93 /* UrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlView.swift; sourceTree = "<group>"; };
+		165008DD26FC1E60008A832A /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		168D253C26FA8C7E004CBA39 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		168D254326FA9B24004CBA39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		16A0129826F49B5A002467A7 /* wipy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wipy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +140,8 @@
 				168D253C26FA8C7E004CBA39 /* VideoView.swift */,
 				168D254326FA9B24004CBA39 /* PreferencesView.swift */,
 				1647F78926FBFD8F0011FD93 /* UrlView.swift */,
+				165008DD26FC1E60008A832A /* TextField.swift */,
+				1602A65026FC3E4D0030A1BC /* MainWindow.swift */,
 			);
 			path = wipy;
 			sourceTree = "<group>";
@@ -218,6 +224,7 @@
 			packageReferences = (
 				168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */,
 				168D254526FAA5ED004CBA39 /* XCRemoteSwiftPackageReference "Defaults" */,
+				1602A64D26FC3AA80030A1BC /* XCRemoteSwiftPackageReference "Insomnia" */,
 			);
 			productRefGroup = 16A0129926F49B5A002467A7 /* Products */;
 			projectDirPath = "";
@@ -288,10 +295,12 @@
 			files = (
 				168D253D26FA8C7E004CBA39 /* VideoView.swift in Sources */,
 				161F9C5E26F49CFB005D3739 /* header.m in Sources */,
+				1602A65126FC3E4D0030A1BC /* MainWindow.swift in Sources */,
 				16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */,
 				161F9C6026F4B436005D3739 /* Menu.swift in Sources */,
 				168D254426FA9B24004CBA39 /* PreferencesView.swift in Sources */,
 				161F9C6226F4B8A0005D3739 /* Player.swift in Sources */,
+				165008DE26FC1E61008A832A /* TextField.swift in Sources */,
 				1647F78A26FBFD8F0011FD93 /* UrlView.swift in Sources */,
 				16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */,
 			);
@@ -425,7 +434,7 @@
 				CODE_SIGN_ENTITLEMENTS = wipy/wipy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = SPBF9BNRG3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -461,7 +470,7 @@
 				CODE_SIGN_ENTITLEMENTS = wipy/wipy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = SPBF9BNRG3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -510,6 +519,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1602A64D26FC3AA80030A1BC /* XCRemoteSwiftPackageReference "Insomnia" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ochococo/Insomnia";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		168D253E26FA97EA004CBA39 /* XCRemoteSwiftPackageReference "Preferences" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Preferences";

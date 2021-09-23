@@ -84,10 +84,8 @@ class Player: NSObject, ObservableObject, VLCMediaDelegate, VLCMediaPlayerDelega
             switch player.state {
                 case .buffering:
                 print("buff")
-                drawable.hack()
                     break
                 case .playing:
-                print("play")
                 drawable.hack()
                     break
                 default: break
@@ -99,6 +97,5 @@ class Player: NSObject, ObservableObject, VLCMediaDelegate, VLCMediaPlayerDelega
     }
     
     func mediaMetaDataDidChange(_ m: VLCMedia) {
-        print(m.metaDictionary)
     }
 }

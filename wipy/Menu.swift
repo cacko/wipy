@@ -8,8 +8,6 @@
 import Foundation
 import SwiftUI
 import AppKit
-import IOKit
-import IOKit.pwr_mgt
 import Preferences
 import Defaults
 
@@ -142,8 +140,11 @@ class CrapMenu: NSMenu {
     
     var parent: Menu
     
+    var window: MainWindow
+    
     init(_ _title: String, _ _parent: Menu) {
         parent = _parent
+        window = _parent.window
         super.init(title: _title)
         _init()
     }
@@ -165,15 +166,15 @@ class CrapMenu: NSMenu {
     }
     
     @objc func onToggleFullscreen(sender: NSMenuItem) {
-        parent.isFullScreen.toggle()
-        sender.state = parent.isFullScreen ? .on : .off
+        window.isFullScreen.toggle()
+        sender.state = window.isFullScreen ? .on : .off
     }
     
 
 
     @objc func onAlwaysOnTop(sender: NSMenuItem) {
-        parent.isFloating.toggle()
-        sender.state = parent.isFloating ? .on : .off
+        window.isFloating.toggle()
+        sender.state = window.isFloating ? .on : .off
     }
 
     @objc func onQuit(sender: NSMenuItem) {
@@ -182,10 +183,10 @@ class CrapMenu: NSMenu {
     
     
     @objc func onMinimize(sender: NSMenuItem) {
-        if parent.isFullScreen {
-            return parent.isFullScreen.toggle()
+        if window.isFullScreen {
+            return window.isFullScreen.toggle()
         }
-        parent.window.miniaturize(self)
+        window.miniaturize(self)
     }
     
     @objc func onAudioMute(sender: NSMenuItem) {
@@ -205,7 +206,7 @@ class CrapMenu: NSMenu {
     
     @objc func onOpenUrl(sender: StreamItem) {
         parent.urlmodal.show()
-        if (parent.isFloating) {
+        if (window.isFloating) {
             parent.urlmodal.window?.level = .floating
         }
         parent.urlmodal.window?.orderFrontRegardless()
@@ -215,7 +216,7 @@ class CrapMenu: NSMenu {
     
     @objc func onPreferences(sender: StreamItem) {
         parent.preferences.show()
-        if (parent.isFloating) {
+        if (window.isFloating) {
             parent.preferences.window?.level = .floating
         }
         parent.preferences.window?.orderFrontRegardless()
@@ -234,61 +235,13 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     }
     
     var view: ContentView
-    var window: NSWindow
+    var window: MainWindow
     var mainMenu: NSMenu
     var preferences: PreferencesWindowController
     var urlmodal: PreferencesWindowController
     var player = Player.instance
     
-    var noSleepAssertionID: IOPMAssertionID = 0
-    var noSleepReturn: IOReturn?
 
-    func disableScreenSleep(reason: String = "Unknown reason") -> Bool? {
-        guard noSleepReturn == nil else { return nil }
-        noSleepReturn = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep as CFString, IOPMAssertionLevel(kIOPMAssertionLevelOn), reason as CFString, &noSleepAssertionID)
-        return noSleepReturn == kIOReturnSuccess
-    }
-
-    func  enableScreenSleep() -> Bool {
-        if noSleepReturn != nil {
-            _ = IOPMAssertionRelease(noSleepAssertionID) == kIOReturnSuccess
-            noSleepReturn = nil
-            return true
-        }
-        return false
-    }
-    
-    var isFloating = false {
-        didSet {
-            guard isFullScreen else {
-                window.level = isFloating ? .floating : .normal
-                _ = isFloating ? disableScreenSleep() : enableScreenSleep()
-                Player.instance.onTop = isFloating
-                return
-            }
-        }
-    }
-    
-    var isFullScreen = false {
-        didSet {
-            window.toggleFullScreen(self)
-            if isFullScreen {
-                NSCursor.hide()
-                let _ = disableScreenSleep()
-                isFloating = isFullScreen
-                player.borderWidth = 0
-                window.showsResizeIndicator = false
-            } else {
-                let _ = enableScreenSleep()
-                NSCursor.unhide()
-                player.borderWidth = 10
-                window.showsResizeIndicator = true
-            }
-        }
-    }
-    
-
-    
     init(delegate: AppDelegate) {
         self.view = delegate.contentView
         self.window = delegate.window
@@ -312,8 +265,9 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
         return mainMenu.addItem(withTitle: string, action: selector, keyEquivalent: charCode)
     }
     
+    
     func _init() {
-        _ = mainMenu.items.dropFirst().map{ $0.menu?.removeItem($0) }
+        _ = mainMenu.items.dropFirst().filter{ $0.title != "Edit" }.map{ $0.menu?.removeItem($0) }
         mainMenu.delegate = self
         addMenu(StreamMenu("Stream", self))
         addMenu(VideoMenu("Video", self))

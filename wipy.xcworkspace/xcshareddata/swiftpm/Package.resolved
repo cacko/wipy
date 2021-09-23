@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Insomnia",
+        "repositoryURL": "https://github.com/ochococo/Insomnia",
+        "state": {
+          "branch": null,
+          "revision": "212e3d1e8d49248796e436679b60ee1dfda622ce",
+          "version": "2.0.1"
+        }
+      },
+      {
         "package": "Preferences",
         "repositoryURL": "https://github.com/sindresorhus/Preferences",
         "state": {
