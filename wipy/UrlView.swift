@@ -44,7 +44,7 @@ struct UrlModal: View {
                             Button("Close") {
                             close()
                         }
-                    }.buttonStyle(.borderedProminent)
+                    }.buttonStyle(.automatic)
                 }
             }
         }

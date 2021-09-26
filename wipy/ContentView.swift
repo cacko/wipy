@@ -106,6 +106,6 @@ struct ContentView: View {
         .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
         }.aspectRatio(16/9, contentMode: .fit)
-            .border(.selection , width: hasBorder ? player.borderWidth : 0)
+            .border(.white , width: hasBorder ? player.borderWidth : 0)
     }
 }
