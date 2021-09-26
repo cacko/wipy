@@ -49,10 +49,9 @@ struct ContentView: View {
     
     func startVideo() {
         guard player.playing else {
-            let stream1 = UserDefaults.standard.string(forKey: Defaults.Keys.stream1Url.name)
-            if ((stream1) != nil) {
+            if let stream = Streams.instance.autoPlay {
                 player.allowOpen = false
-                player.play(VLCMedia(url: URL(string: stream1!)!))
+                player.play(VLCMedia(url:stream.url))
             }
             return
         }
@@ -108,6 +107,5 @@ struct ContentView: View {
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
         }.aspectRatio(16/9, contentMode: .fit)
             .border(.selection , width: hasBorder ? player.borderWidth : 0)
-            .cornerRadius(player.borderWidth)
     }
 }

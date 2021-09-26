@@ -87,7 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentAspectRatio = fixedRatio
         window.collectionBehavior = .fullScreenPrimary
         window.backgroundColor = .clear
-        window.hasShadow = true
+        window.hasShadow = false
         window.showsResizeIndicator = true
         windowController.window?.delegate = windowController
         windowController.showWindow(self)

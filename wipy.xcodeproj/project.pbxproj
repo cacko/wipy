@@ -32,6 +32,7 @@
 		16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129B26F49B5A002467A7 /* wipyApp.swift */; };
 		16A0129E26F49B5A002467A7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0129D26F49B5A002467A7 /* ContentView.swift */; };
 		16A012A026F49B5B002467A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16A0129F26F49B5B002467A7 /* Assets.xcassets */; };
+		16A35F202700C3E000294786 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A35F1F2700C3E000294786 /* Stream.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		16A0129B26F49B5A002467A7 /* wipyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wipyApp.swift; sourceTree = "<group>"; };
 		16A0129D26F49B5A002467A7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		16A0129F26F49B5B002467A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		16A35F1F2700C3E000294786 /* Stream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		351E32BAA540E0CBC08FF0EA /* Pods_wipy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wipy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F4FA991B28C90229BC25D6 /* Pods-wipy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wipy.debug.xcconfig"; path = "Target Support Files/Pods-wipy/Pods-wipy.debug.xcconfig"; sourceTree = "<group>"; };
 		558955E0FEF3E27A2F6DD919 /* Pods-wipy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wipy.release.xcconfig"; path = "Target Support Files/Pods-wipy/Pods-wipy.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				168D254326FA9B24004CBA39 /* PreferencesView.swift */,
 				1647F78926FBFD8F0011FD93 /* UrlView.swift */,
 				1602A65026FC3E4D0030A1BC /* MainWindow.swift */,
+				16A35F1F2700C3E000294786 /* Stream.swift */,
 			);
 			path = wipy;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				161F9C6226F4B8A0005D3739 /* Player.swift in Sources */,
 				1647F78A26FBFD8F0011FD93 /* UrlView.swift in Sources */,
 				16A0129C26F49B5A002467A7 /* wipyApp.swift in Sources */,
+				16A35F202700C3E000294786 /* Stream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
