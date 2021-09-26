@@ -26,6 +26,7 @@ extension NSOpenPanel {
 struct ContentView: View {
     @ObservedObject var player = Player.instance
     @State var url = ""
+    @State var hasBorder = false
     
     func showOpenFile() {
         let panel = NSOpenPanel()
@@ -64,6 +65,9 @@ struct ContentView: View {
                 VideoViewRep()
                     .frame(width: geo.size.width, height: geo.size.height)
                     .onAppear(perform: startVideo)
+                    .onHover { over in
+                        hasBorder = over
+                    }
             }
             HStack{
                 Spacer()
@@ -103,7 +107,7 @@ struct ContentView: View {
         .alert(item: $player.error) { err in
             Alert(title: Text("Device error") , message: Text(err.msg), dismissButton: .cancel())
         }.aspectRatio(16/9, contentMode: .fit)
-            .border(.background, width: player.borderWidth)
+            .border(.selection , width: hasBorder ? player.borderWidth : 0)
             .cornerRadius(player.borderWidth)
     }
 }

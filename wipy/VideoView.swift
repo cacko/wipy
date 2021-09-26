@@ -39,6 +39,7 @@ class VideoView: VLCVideoView, VLCMediaPlayerDelegate
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
         
     override public func mouseDown(with event: NSEvent) {
         guard window!.inLiveResize else {

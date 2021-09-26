@@ -17,33 +17,55 @@ class Stream {
     
     var url: URL
     
+    var kL: Defaults.AnyKey
+    
+    var kU: Defaults.AnyKey
+        
     var isValid: Bool {
         get {
             self.title.count > 0 && self.url.absoluteString.count > 0
         }
     }
     
-    init(title: String?, url: String?) {
-        self.title = title ?? ""
-        self.url = URL(string: url ?? "") ?? URL(fileURLWithPath: "")
+    init(keyLabel: Defaults.AnyKey, keyUrl: Defaults.AnyKey) {
+        self.kL = keyLabel
+        self.kU = keyUrl
+        self.title = UserDefaults.standard.string(forKey: keyLabel.name) ?? keyLabel.name
+        self.url = URL(string: UserDefaults.standard.string(forKey: keyUrl.name) ?? "") ?? URL(fileURLWithPath: "")
     }
     
 }
 
+
+
 class Streams {
+    
+    static let keys: [Defaults.AnyKey] =
+        [
+            .stream1Url,
+            .stream2Url,
+            .stream3Url,
+        ]
+    
+    
+    static let labels: [Defaults.AnyKey] =
+        [
+            .stream1Label,
+            .stream2Label,
+            .stream3Label,
+        ]
+    
     
     var streams: [Stream] {
         get {
             var res: [Stream] = []
             for key in [
-                [Defaults.Keys.stream1Label.name, Defaults.Keys.stream1Url.name],
-                [Defaults.Keys.stream2Label.name, Defaults.Keys.stream2Url.name],
-                [Defaults.Keys.stream3Label.name, Defaults.Keys.stream3Url.name]
+                [Defaults.Keys.stream1Label, Defaults.Keys.stream1Url],
+                [Defaults.Keys.stream2Label, Defaults.Keys.stream2Url],
+                [Defaults.Keys.stream3Label, Defaults.Keys.stream3Url]
             ] {
-                let stream = Stream(title: UserDefaults.standard.string(forKey: key[0]), url: UserDefaults.standard.string(forKey: key[1]))
-                if (stream.isValid) {
-                    res.append(stream)
-                }
+                let stream = Stream(keyLabel: key[0], keyUrl: key[1])
+                res.append(stream)
             }
             return res
         }
@@ -52,11 +74,16 @@ class Streams {
 
 class StreamItem: CrapItem {
     
-    var media: VLCMedia
+    var media: VLCMedia {
+        VLCMedia(url: stream.url)
+    }
     
-    init(title: String, action: Selector?, keyEquivalent: String, media: VLCMedia) {
-        self.media = media
-        super.init(title: title, action: action, keyEquivalent: keyEquivalent)
+    var stream: Stream
+    
+    init(action: Selector?, keyEquivalent: String, stream: Stream) {
+        self.stream = stream
+        super.init(title: stream.title, action: action, keyEquivalent: keyEquivalent)
+        self.isHidden = !stream.isValid
     }
     
     required init(coder: NSCoder) {
@@ -73,54 +100,64 @@ class CrapItem: NSMenuItem, NSUserInterfaceValidations {
     }
 }
 
-class StreamMenu: CrapMenu {
+class StreamMenu: WipyMenu {
     
     var streams = Streams()
-    
-    override var actions: Array<NSMenuItem> { get {
-        var res: [NSMenuItem] = []
-        for stream in streams.streams {
-            res.append(StreamItem(title: stream.title,  action: #selector(onStream(sender:)), keyEquivalent: "1", media: VLCMedia(url: stream.url)))
-        }
-
-        res += [
+        
+    override var actions: [NSMenuItem] {
+        [
             NSMenuItem.separator(),
-            CrapItem(title: "Open file...", action: #selector(onOpenFile(sender:)), keyEquivalent: "o"),
-            CrapItem(title: "Open url...", action: #selector(onOpenUrl(sender:)), keyEquivalent: "u"),
-            CrapItem(title: "Preferences", action: #selector(onPreferences(sender:)), keyEquivalent: ",")
+            NSMenuItem(title: "Open file...", action: #selector(onOpenFile(sender:)), keyEquivalent: "o"),
+            NSMenuItem(title: "Open url...", action: #selector(onOpenUrl(sender:)), keyEquivalent: "u"),
+            NSMenuItem(title: "Preferences", action: #selector(onPreferences(sender:)), keyEquivalent: ",")
         ]
         
-        return res
-        
-        }
     }
     
     override func _init() {
-        guard actions.count == 0 else {
-            for item in actions {
+        for (idx, stream) in streams.streams.enumerated() {
+                let item = StreamItem(action: #selector(onStream(sender:)), keyEquivalent: String(idx + 1), stream: stream)
                 item.target = self
+                item.isHidden = !stream.isValid
                 self.addItem(item)
             }
-            return
+        super._init()
+        
+        
+        let center = NotificationCenter.default
+        let mainQueue = OperationQueue.main
+        
 
+        center.addObserver(forName: NSWindow.willCloseNotification, object: parent.preferences.window, queue: mainQueue) {(note) in
+            let streams = self.streams.streams
+            for (idx, item) in self.items.enumerated() {
+                if (item is StreamItem) {
+                    let st = streams[idx]
+                    item.title = st.title
+                    (item as! StreamItem).stream = st
+                    item.isHidden = !st.isValid
+                }
+            }
         }
+        
     }
     
 }
 
-class AudioMenu: CrapMenu {
+class AudioMenu: WipyMenu {
     
-    override var actions: Array<NSMenuItem> { get {
+    override var actions: [NSMenuItem] { get {
          [
             CrapItem(title: "Toggle sound", action: #selector(onAudioMute(sender:)), keyEquivalent: "m"),
         ]
     }}
 
 }
-
-class VideoMenu: CrapMenu {
     
-    override var actions: Array<NSMenuItem> { get {
+
+class VideoMenu: WipyMenu {
+    
+    override var actions: [NSMenuItem] { get {
          [
             CrapItem(title: "Always on top", action: #selector(onAlwaysOnTop(sender:)), keyEquivalent: "a"),
             CrapItem(title: "Toggle full screen", action: #selector(onToggleFullscreen(sender:)), keyEquivalent: "f"),
@@ -130,11 +167,11 @@ class VideoMenu: CrapMenu {
     
 }
 
-class CrapMenu: NSMenu {
-    
+class WipyMenu: NSMenu {
+        
     let player: Player = Player.instance
     
-    var actions: Array<NSMenuItem> {
+    var actions: [NSMenuItem] {
         get { return [] }
     }
     
@@ -142,17 +179,19 @@ class CrapMenu: NSMenu {
     
     var window: MainWindow
     
-    init(_ _title: String, _ _parent: Menu) {
-        parent = _parent
-        window = _parent.window
-        super.init(title: _title)
+    init(title: String, parent: Menu) {
+        self.parent = parent
+        self.window = parent.window
+        super.init(title: title)
         _init()
     }
     
     func _init() {
         guard actions.count == 0 else {
             for item in actions {
-                item.keyEquivalentModifierMask.remove(.command)
+                if (item is CrapItem) {
+                    item.keyEquivalentModifierMask.remove(.command)
+                }
                 item.target = self
                 self.addItem(item)
             }
@@ -257,7 +296,7 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func addItem(_ newItem: NSMenuItem) {
+    override func addItem(_ newItem: NSMenuItem){
         mainMenu.addItem(newItem)
     }
             
@@ -269,12 +308,12 @@ class Menu: NSMenu, NSMenuDelegate, NSMenuItemValidation, NSUserInterfaceValidat
     func _init() {
         _ = mainMenu.items.dropFirst().filter{ $0.title != "Edit" }.map{ $0.menu?.removeItem($0) }
         mainMenu.delegate = self
-        addMenu(StreamMenu("Stream", self))
-        addMenu(VideoMenu("Video", self))
-        addMenu(AudioMenu("Audio", self))
+        addMenu(StreamMenu(title: "Stream", parent: self))
+        addMenu(VideoMenu(title: "Video", parent: self))
+        addMenu(AudioMenu(title: "Audio", parent: self))
     }
     
-    func addMenu(_ menu: CrapMenu) {
+    func addMenu(_ menu: WipyMenu) {
         let menuItem = addItem(withTitle: menu.title, action: nil,  keyEquivalent: "")
         menuItem.target = self
         menu.delegate = self

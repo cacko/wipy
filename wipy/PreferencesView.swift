@@ -8,7 +8,6 @@
 import Preferences
 import SwiftUI
 import Defaults
-import VLCKit
 
 
 extension Defaults.Keys {
@@ -33,7 +32,7 @@ struct PreferencesView: View {
 
     private let contentWidth: Double = 450.0
     private let padding: Double = 15
-        
+  
     var body: some View {
         Preferences.Container(contentWidth: contentWidth) {
             Preferences.Section(title: "Stream 1") {

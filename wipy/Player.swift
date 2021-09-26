@@ -45,7 +45,29 @@ class Player: NSObject, ObservableObject, VLCMediaPlayerDelegate  {
     
     static let instance: Player = { Player() }()
     
-    var player = VLCMediaPlayer()
+    let mediaOptions: [AnyHashable: Any] = [
+        "network-caching": 0,
+        "live-caching": 0,
+        "file-caching": 0,
+        "disc-caching": 0,
+        "deinterlace": 0,
+        "clock-jitter": 500,
+        "clock-synchro": 1,
+        "rtsp-frame-buffer-size": 1024 * 1024,
+        "codec": "avcodec,all",
+        "avcodec-skiploopfilter": 0,
+        "avcodec-threads": 1,
+        "avcodec-skip-frame": 2,
+        "avcodec-skip-idct": 2,
+        "canvas-width": 1920,
+        "canvas-height": 1080,
+        "swscale-mode": 1,
+        "prefetch-buffer-size": 0,
+        "rawaud-samplerate": 441000,
+        "mjpeg-fps": 30,
+    ]
+        
+    var player: VLCMediaPlayer = VLCMediaPlayer()
     
     var drawable: VideoView {
         get {
@@ -69,11 +91,10 @@ class Player: NSObject, ObservableObject, VLCMediaPlayerDelegate  {
         playing = false
         player.media = nil
     }
-    
-    private let contentWidth: Double = 450.0
-    
+        
     func play(url: URL) {
         let media = VLCMedia(url: url)
+        media.addOptions(mediaOptions)
         play(media)
         NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
     }

@@ -9,6 +9,7 @@ import SwiftUI
 import AppKit
 import Combine
 import Preferences
+import Defaults
 
 @main
 struct wipyApp: App {
@@ -23,6 +24,7 @@ extension Notification.Name {
     static let closeWindow = NSNotification.Name("close_window")
     static let openWindow = NSNotification.Name("open_window")
     static let fullscreen = NSNotification.Name("fullscreen")
+    static let updatestreams = NSNotification.Name("updatestream")
     static let hack = NSNotification.Name("hack")
 }
 
@@ -57,7 +59,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var fixedRatio = NSSize(width: 1920, height: 1080)
     
     var lastOffset: CGFloat = 1.0
-        
     
     override init() {
         window  = MainWindow(
@@ -105,20 +106,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self.urlModalController.close()
                 break
             case .prefences:
-                self.urlModalController.close()
-            default:
-                break
-            }
-        }
-        
-        center.addObserver(forName: .openWindow, object: nil, queue: mainQueue) {(note) in
-            let obj: WindowController = note.object as! WindowController
-            switch obj {
-            case .urlmodal:
-                self.urlModalController.close()
-                break
-            case .prefences:
-                self.urlModalController.close()
+                self.preferencesWindowController.close()
             default:
                 break
             }
@@ -130,6 +118,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             size.height += self.lastOffset
             self.window.setContentSize(size)
         }
+        
+
+
     }
     
     let StreamsPreferencesView: () -> PreferencePane = {
@@ -141,7 +132,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ) {
             PreferencesView()
         }
-
+        
         return Preferences.PaneHostingController(pane: paneView)
     }
     
