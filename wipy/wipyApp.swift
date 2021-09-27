@@ -22,10 +22,11 @@ struct wipyApp: App {
 
 extension Notification.Name {
     static let closeWindow = NSNotification.Name("close_window")
-    static let openWindow = NSNotification.Name("open_window")
+    static let openUrl = NSNotification.Name("open_url")
     static let fullscreen = NSNotification.Name("fullscreen")
     static let updatestreams = NSNotification.Name("updatestream")
     static let hack = NSNotification.Name("hack")
+    static let initApp = NSNotification.Name("initApp")
 }
 
 
@@ -57,6 +58,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let windowController: MainWindowController
 
     var fixedRatio = NSSize(width: 1920, height: 1080)
+    
+    var initAppSize = NSSize(width: 800, height: 450)
     
     var lastOffset: CGFloat = 1.0
     
@@ -119,8 +122,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.window.setContentSize(size)
         }
         
-
-
+        center.addObserver(forName: .initApp, object: nil, queue: mainQueue) {(note) in
+            self.window.setContentSize(self.initAppSize)
+        }
+        
+        center.addObserver(forName: .openUrl, object: nil, queue: mainQueue) {(note) in
+            self.urlModalController.show()
+            if (self.window.isFloating) {
+                self.urlModalController.window?.level = .floating
+            }
+            self.urlModalController.window?.orderFrontRegardless()
+            self.window.orderBack(nil)
+            self.urlModalController.becomeFirstResponder()
+        }
     }
     
     let StreamsPreferencesView: () -> PreferencePane = {

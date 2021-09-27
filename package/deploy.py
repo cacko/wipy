@@ -10,7 +10,9 @@ project = gl.projects.get(project_name_with_namespace)
 
 package = project.generic_packages.upload(
     package_name="wipy",
-    package_version="v1.0.0",
+    package_version="v1.0.1",
     file_name="wipy.dmg",
     path="./wipy.dmg"
 )
+
+print(package)

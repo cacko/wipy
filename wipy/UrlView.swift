@@ -7,7 +7,7 @@
 
 import Preferences
 import SwiftUI
-
+import Defaults
 
 
 struct UrlModal: View {
@@ -16,16 +16,25 @@ struct UrlModal: View {
     
     private let contentWidth: Double = 450.0
     private let padding: Double = 15.0
+    let player = Player.instance
     
     func play() {
-        let mediaUrl =  URL(string: self.url)
-        let media = VLCMedia(url: mediaUrl!)
-        Player.instance.play(media)
+
         NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
+        guard url == "" else {
+            let media = VLCMedia(url: URL(string: url)!)
+            player.allowOpen = false
+            player.play(media)
+            Defaults[.stream1Url] = url
+            Defaults[.stream1Label] = "Auto open"
+            NotificationCenter.default.post(name: .updatestreams, object: nil)
+            return
+        }
     }
     
     func close() {
         NotificationCenter.default.post(Notification(name: .closeWindow, object: WindowController.urlmodal))
+ 
     }
     
     func handlePaste(provider: Any) {

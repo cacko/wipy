@@ -37,10 +37,9 @@ struct ContentView: View {
     }
     
     func showOpenUrl() {
-        
+        NotificationCenter.default.post(name: .openUrl, object: nil)
     }
     
-
     func openVideoFile(_ f: URL) {
         let media = VLCMedia(url: f)
         player.allowOpen = false
@@ -52,6 +51,9 @@ struct ContentView: View {
             if let stream = Streams.instance.autoPlay {
                 player.allowOpen = false
                 player.play(VLCMedia(url:stream.url))
+            } else {
+                NotificationCenter.default.post(name: .initApp, object: nil)
+                player.allowOpen = true
             }
             return
         }

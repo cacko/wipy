@@ -68,17 +68,25 @@ class StreamMenu: WipyMenu {
         
 
         center.addObserver(forName: NSWindow.willCloseNotification, object: parent.preferences.window, queue: mainQueue) {(note) in
-            let streams = self.streams.streams
-            for (idx, item) in self.items.enumerated() {
-                if (item is StreamItem) {
-                    let st = streams[idx]
-                    item.title = st.title
-                    (item as! StreamItem).stream = st
-                    item.isHidden = !st.isValid
-                }
-            }
+            self.updateMenus()
         }
         
+        center.addObserver(forName: .updatestreams, object: nil, queue: mainQueue) {(note) in
+            self.updateMenus()
+        }
+        
+    }
+    
+    func updateMenus() {
+        let streams = self.streams.streams
+        for (idx, item) in self.items.enumerated() {
+            if (item is StreamItem) {
+                let st = streams[idx]
+                item.title = st.title
+                (item as! StreamItem).stream = st
+                item.isHidden = !st.isValid
+            }
+        }
     }
     
 }
@@ -183,13 +191,7 @@ class WipyMenu: NSMenu {
     }
     
     @objc func onOpenUrl(sender: StreamItem) {
-        parent.urlmodal.show()
-        if (window.isFloating) {
-            parent.urlmodal.window?.level = .floating
-        }
-        parent.urlmodal.window?.orderFrontRegardless()
-        parent.window.orderBack(nil)
-        parent.urlmodal.becomeFirstResponder()
+        NotificationCenter.default.post(name: .openUrl, object: nil)
     }
     
     @objc func onPreferences(sender: StreamItem) {
